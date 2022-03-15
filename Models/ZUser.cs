@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ZapperBugTracker.Models
 {
-  // Inherit props/methods from IdentityUser
+  // Custom ZUser: extend and inherit props/methods from IdentityUser
   public class ZUser : IdentityUser
   {
     // User profile info

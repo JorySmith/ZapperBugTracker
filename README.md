@@ -12,4 +12,5 @@
 
  ### Build Steps
 
- 1.  Create models and update ApplicationDbContext  
+ 1. Create models, update connection string and IdentityDbContext  
+ 2. Scaffold Area Identity Pages  
