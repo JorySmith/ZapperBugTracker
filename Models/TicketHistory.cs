@@ -38,7 +38,7 @@ namespace ZapperBugTracker.Models
         public string UserId { get; set; }
 
         // Store instances of Ticket and ZUser using their foregin keys above
-        // Virtual helps specify navigation properties and class relationships
+        // Virtual helps are navigation properties and specify class relationships
         public virtual Ticket Ticket { get; set; }
         public virtual ZUser User { get; set; }
 
