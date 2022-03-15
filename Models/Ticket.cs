@@ -59,10 +59,10 @@ namespace ZapperBugTracker.Models
         [DisplayName("Ticket Developer")]
         public string DeveloperUserId { get; set; }
 
-        // Navigation properties
+        // Navigation properties references
         // Virtual properties allow for lazy loading as opposed to eager loading
         // Get access to entities and their properties/methods
-        // Project, TicketType, Priority, Status, Owner, Developer
+        // Project, TicketType, Priority, Status, Owner, and Developer
         public virtual Project Project { get; set; }
         public virtual TicketType TicketType { get; set; }
         public virtual TicketPriority TicketPriority { get; set; }
@@ -70,7 +70,13 @@ namespace ZapperBugTracker.Models
         public virtual ZUser OwnerUser { get; set; }
         public virtual ZUser DeveloperUser { get; set; }
 
-
+        // Navigation property collections (not going to DB, just references bc virtual)
+        // Assign respective HashSet<Type> to each one 
+        // Comments, Attachments, Nofitications, and History
+        public virtual ICollection<TicketComment> Comments { get; set;} = new HashSet<TicketComment>();
+        public virtual ICollection<TicketAttachment> Attachments { get; set; } = new HashSet<TicketAttachment>();
+        public virtual ICollection<Notification> Comments { get; set; } = new HashSet<Notification>();
+        public virtual ICollection<TicketHistory> History { get; set; } = new HashSet<TicketHistory>();
 
     }
 }
