@@ -15,4 +15,4 @@
  1. Create models, update connection string and IdentityDbContext  
  2. Scaffold Area Identity Pages  
  3. Add Npgsql NuGet packages, update Program.cs services  
- 4. Create PostgreSQL database  
+ 4. Integrate PostgreSQL database  
