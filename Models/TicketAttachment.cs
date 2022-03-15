@@ -17,7 +17,7 @@ namespace ZapperBugTracker.Models
         public DateTimeOffset Created { get; set; }
 
         // Track user that made attachment as a string
-        // Foreign key to ZUser : IU
+        // Foreign key UserId / ZUser : IU
         [DisplayName("Team Member")]
         public string UserId { get; set; }
 
