@@ -46,7 +46,7 @@ namespace ZapperBugTracker.Models
 
         // Navigation collection properties
         // Projects
-        public ICollection<Project> Projects { get; set; }
+        public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
 
     }

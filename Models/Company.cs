@@ -17,7 +17,7 @@ namespace ZapperBugTracker.Models
 
         // Navigation collection properties
         // ZUsers and Projects
-        public virtual ICollection<ZUser> Users { get; set; }
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<ZUser> Users { get; set; } = new HashSet<ZUser>();
+        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
     }
 }

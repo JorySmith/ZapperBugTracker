@@ -75,7 +75,7 @@ namespace ZapperBugTracker.Models
         // Comments, Attachments, Nofitications, and History
         public virtual ICollection<TicketComment> Comments { get; set;} = new HashSet<TicketComment>();
         public virtual ICollection<TicketAttachment> Attachments { get; set; } = new HashSet<TicketAttachment>();
-        public virtual ICollection<Notification> Comments { get; set; } = new HashSet<Notification>();
+        public virtual ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
         public virtual ICollection<TicketHistory> History { get; set; } = new HashSet<TicketHistory>();
 
     }
