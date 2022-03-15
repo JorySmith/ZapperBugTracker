@@ -10,6 +10,7 @@ namespace ZapperBugTracker.Models
         public int Id { get; set; }
 
         // CompanyId nullable foreign key
+        [DisplayName("Company")]
         public int? CompanyId { get; set; }
 
         // Name, length limited to 50 chars
@@ -36,10 +37,6 @@ namespace ZapperBugTracker.Models
         [DisplayName("Priority")]
         public int ProjectProjectId { get; set; }
 
-        // Upload file description
-        //[DisplayName("File Description")]
-        //public string Description { get; set; }
-
         // Image IFormFile upload, don't map it to db
         // DataType.DataUpload
         [NotMapped]
@@ -48,9 +45,10 @@ namespace ZapperBugTracker.Models
 
         // Image DB storage schema
         // Name, byte[] data, content type/extension
+        [DisplayName("File Name")]
         public string ImageFileName { get; set; }
         public byte[] ImageFileData { get; set; }
-
+        [DisplayName("File Extension")]
         public string ImageContentType { get; set; }
 
         // Archived

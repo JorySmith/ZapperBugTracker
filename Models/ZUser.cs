@@ -23,5 +23,31 @@ namespace ZapperBugTracker.Models
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
+        // Avatar File
+        public IFormFile AvatarFormFile { get; set; }
+
+        // Avatar Name
+        [Display(Name = "Avatar")]
+        public string AvatarFileName { get; set; }
+
+        // Avatar Data
+        public byte[] AvatarFileData { get; set; }
+
+        // Avatar File Extension/Content Type
+        [Display(Name = "File Extension")]
+        public string AvatarContentType { get; set; }
+
+        // CompanyId foreign key, nullable will exist temporarily 
+        public int? CompanyId { get; set; }
+
+        // Navigation properties (relationships between models/class/tables)
+        // Company (single associated company, no need for hashset)
+        public virtual Company Company { get; set; }
+
+        // Navigation collection properties
+        // Projects
+        public ICollection<Project> Projects { get; set; }
+
+
     }
 }
