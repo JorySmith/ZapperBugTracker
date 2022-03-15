@@ -1,6 +1,6 @@
 # Zapper Bug Tracker
 
- A full stack bug tracker built with C#, ASP.NET Core, MVC, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
+ A full stack bug tracker built with C#, ASP.NET Core 6.0, MVC, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
 
  ## Live Demo
 
