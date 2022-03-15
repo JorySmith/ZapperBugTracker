@@ -11,15 +11,15 @@ namespace ZapperBugTracker.Models
         [DisplayName("Member Comment")]
         public string Comment { get; set; }
 
-        // Comment created date
+        // Created date
         [DisplayName("Date")]
         public DateTimeOffset Created { get; set; }
 
-        // Ticket Id foreign key
+        // TicketId foreign key
         [DisplayName("Ticket")]
         public int TicketId { get; set; }
 
-        // User Id *string* not int - ZUser foreign key
+        // UserId *string* not int - ZUser foreign key
         [DisplayName("Team Member")]
         public string UserId { get; set; }
 
