@@ -8,6 +8,7 @@ namespace ZapperBugTracker.Models
     // Custom ZUser: extend and inherit props/methods from IdentityUser
     public class ZUser : IdentityUser
     {        
+        // IdentityUser already contants user id prop string
         // Data annotations (Display() is for the View)
         [Required]
         [Display(Name = "First Name")] 

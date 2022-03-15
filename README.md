@@ -1,6 +1,6 @@
 # Zapper Bug Tracker
 
- A full stack C#, ASP.NET Core, MVC bug tracker.  
+ A full stack bug tracker built with C#, ASP.NET Core, MVC, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
 
  ## Live Demo
 
@@ -12,7 +12,7 @@
 
  ### Build Steps
 
- 1. Create models, update connection string and IdentityDbContext  
+ 1. Create models/lookup tables, update connection string and IdentityDbContext  
  2. Scaffold Area Identity Pages  
  3. Add Npgsql NuGet packages, update Program.cs services  
  4. Create data migratations and integrate PostgreSQL database  
