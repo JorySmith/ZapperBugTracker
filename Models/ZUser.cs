@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ZapperBugTracker.Models
 {
+    // Registered user's profile info
     // Custom ZUser: extend and inherit props/methods from IdentityUser
     public class ZUser : IdentityUser
-    {
-        // User profile info
-        // Data annotations
+    {        
+        // Data annotations (Display() is for the View)
         [Required]
-        [Display(Name = "First Name")] // For the View
+        [Display(Name = "First Name")] 
         public string FirstName { get; set; }
 
         [Required]
