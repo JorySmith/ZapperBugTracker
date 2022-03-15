@@ -58,16 +58,13 @@ namespace ZapperBugTracker.Models
         public bool Archived { get; set; }
 
         // Navigation virtual property references
-        // Company
+        // Company and ProjectPriority
         public virtual Company Company { get; set; }
-
-        // Project priority
         public virtual ProjectPriority ProjectPriority { get; set;}
 
-        // Members - ZUsers
+        // Navigation collection properties 
+        // Members - ZUsers and Tickets
         public ICollection<ZUser> Members { get; set;} = new HashSet<ZUser>();
-
-        // Tickets
         public ICollection<Ticket> Tickets { get; set;} = new HashSet<Ticket>();
     }
 }

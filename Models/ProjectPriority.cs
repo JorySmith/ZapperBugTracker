@@ -2,13 +2,12 @@
 
 namespace ZapperBugTracker.Models
 {
-    public class TicketPriority
+    public class ProjectPriority
     {
         // Id primary key
         public int Id { get; set; }
 
         [DisplayName("Priority Name")]
         public string Name { get; set; }
-
     }
 }
