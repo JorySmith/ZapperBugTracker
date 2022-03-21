@@ -13,6 +13,6 @@
  ### Build Steps
 
  1. Create models/lookup tables for key features  
- 2. Scaffold Area Identity Pages, update connection string and IdentityDbContext
+ 2. Scaffold Area Identity Pages, update connection string and IdentityDbContext  
  3. Add Npgsql NuGet packages, update Program.cs services  
- 4. Create data migratations and integrate PostgreSQL database  
+ 4. Create AppDbContext DbSets and data migratations, then update PostgreSQL database  

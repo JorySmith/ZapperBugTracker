@@ -23,7 +23,8 @@ namespace ZapperBugTracker.Models
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
-        // Avatar File
+        // Avatar File, don't map to DB, map file's byte[] instead
+        [NotMapped]
         public IFormFile AvatarFormFile { get; set; }
 
         // Avatar Name

@@ -44,8 +44,8 @@ namespace ZapperBugTracker.Models
         // Navigation properties
         // Ticket, Recipient, Sender
         public virtual Ticket Ticket { get; set; }
-        public virtual Recipient Recipient { get; set; }
-        public virtual Sender Sender { get; set; }
+        public virtual ZUser Recipient { get; set; }
+        public virtual ZUser Sender { get; set; }
 
     }
 }
