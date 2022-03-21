@@ -11,22 +11,22 @@ using ZapperBugTracker.Models;
 
 namespace ZapperBugTracker.Controllers
 {
-    public class CompaniesController : Controller
+    public class TicketStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CompaniesController(ApplicationDbContext context)
+        public TicketStatusController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Companies
+        // GET: TicketStatus
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Companies.ToListAsync());
+            return View(await _context.TicketStatuses.ToListAsync());
         }
 
-        // GET: Companies/Details/5
+        // GET: TicketStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,37 +34,39 @@ namespace ZapperBugTracker.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var ticketStatus = await _context.TicketStatuses
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (ticketStatus == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(ticketStatus);
         }
 
-        // GET: Companies/Create
+        // GET: TicketStatus/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Companies/Create
+        // POST: TicketStatus/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Company company)
+        public async Task<IActionResult> Create([Bind("Id,Name")] TicketStatus ticketStatus)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(company);
+                _context.Add(ticketStatus);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(ticketStatus);
         }
 
-        // GET: Companies/Edit/5
+        // GET: TicketStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,20 +74,22 @@ namespace ZapperBugTracker.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Companies.FindAsync(id);
-            if (company == null)
+            var ticketStatus = await _context.TicketStatuses.FindAsync(id);
+            if (ticketStatus == null)
             {
                 return NotFound();
             }
-            return View(company);
+            return View(ticketStatus);
         }
 
-        // POST: Companies/Edit/5
+        // POST: TicketStatus/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] TicketStatus ticketStatus)
         {
-            if (id != company.Id)
+            if (id != ticketStatus.Id)
             {
                 return NotFound();
             }
@@ -94,12 +98,12 @@ namespace ZapperBugTracker.Controllers
             {
                 try
                 {
-                    _context.Update(company);
+                    _context.Update(ticketStatus);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.Id))
+                    if (!TicketStatusExists(ticketStatus.Id))
                     {
                         return NotFound();
                     }
@@ -110,10 +114,10 @@ namespace ZapperBugTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(ticketStatus);
         }
 
-        // GET: Companies/Delete/5
+        // GET: TicketStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,30 +125,30 @@ namespace ZapperBugTracker.Controllers
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var ticketStatus = await _context.TicketStatuses
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (ticketStatus == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(ticketStatus);
         }
 
-        // POST: Companies/Delete/5
+        // POST: TicketStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.Companies.FindAsync(id);
-            _context.Companies.Remove(company);
+            var ticketStatus = await _context.TicketStatuses.FindAsync(id);
+            _context.TicketStatuses.Remove(ticketStatus);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CompanyExists(int id)
+        private bool TicketStatusExists(int id)
         {
-            return _context.Companies.Any(e => e.Id == id);
+            return _context.TicketStatuses.Any(e => e.Id == id);
         }
     }
 }
