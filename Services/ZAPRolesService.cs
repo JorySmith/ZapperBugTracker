@@ -25,7 +25,9 @@ namespace ZapperBugTracker.Services
         // IsUserInRoleAsync check
         public async Task<bool> IsUserInRoleAsync(ZUser user, string roleName)
         {
-            throw new NotImplementedException();
+            // Pass user and role to userManager to get bool
+            bool result = await _userManager.IsInRoleAsync(user, roleName);
+            return result;
         }
 
         // Get list/IEnumerable of all roles (strings) assigned to a user 
@@ -46,13 +48,20 @@ namespace ZapperBugTracker.Services
         // RemoveUserFromRoleAsync, return action success/failure
         public async Task<bool> RemoveUserFromRoleAsync(ZUser user, string roleName)
         {
-            throw new NotImplementedException();
+            // Pass user and role to userManager to remove user
+            // Use Succeeded property to return a bool
+            bool result = (await _userManager.RemoveFromRoleAsync(user, roleName)).Succeeded;
+            return result;
         }
 
         // Remove user from several roles/list of roles, return action success/failure
         public async Task<bool> RemoveUserFromRolesAsync(ZUser user, IEnumerable<string> roles)
         {
-            throw new NotImplementedException();
+            // Pass user and role to userManager to remove user
+            // Use Succeeded property to return a bool
+            bool result = (await _userManager.RemoveFromRolesAsync(user, roles)).Succeeded;
+            return result;
+
         }
 
         // GetUsersInRoleAsync based on role and companyId, return list of users
@@ -69,7 +78,12 @@ namespace ZapperBugTracker.Services
         // GetUsersNotInRoleAsync, return list of users
         public async Task<List<ZUser>> GetUsersNotInRoleAsync(string roleName, int companyId)
         {
-            throw new NotImplementedException();
+            // Store list of userId(GUIDs) strings but only select Ids from userManager query
+            // Use list to query DB where userId doesn't contain dbUser.Id and matches companyId
+            List<string> userIds = (await _userManager.GetUsersInRoleAsync(roleName)).Select(u => u.Id).ToList();
+            List<ZUser> roleUsers = _context.Users.Where(u => !userIds.Contains(u.Id)).ToList();
+            List<ZUser> result = roleUsers.Where(u => u.CompanyId == companyId).ToList();
+            return result;
         }
 
         // Get a role name string based on its roleId
@@ -81,7 +95,6 @@ namespace ZapperBugTracker.Services
             string result = await _roleManager.GetRoleNameAsync(role);
             return result;
         }
-
 
 
     }
