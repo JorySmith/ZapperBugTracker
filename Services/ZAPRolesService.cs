@@ -68,7 +68,11 @@ namespace ZapperBugTracker.Services
         // Get a role name string based on its roleId
         public async Task<string> GetRoleNameByIdAsync(string roleId)
         {
-            throw new NotImplementedException();
+            // Pass roleManager the role of type IdentityRole from DB
+            // Find role in DB based on roleId
+            IdentityRole role = _context.Roles.Find(roleId);
+            string result = await _roleManager.GetRoleNameAsync(role);
+            return result;
         }
 
 
