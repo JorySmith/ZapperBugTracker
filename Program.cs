@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZapperBugTracker.Data;
 using ZapperBugTracker.Models;
+using ZapperBugTracker.Services;
+using ZapperBugTracker.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,9 @@ builder.Services.AddIdentity<ZUser, IdentityRole>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
+
+// Role service addScoped
+builder.Services.AddScoped<IZAPRolesService, ZAPRolesService>();
 
 builder.Services.AddControllersWithViews();
 
