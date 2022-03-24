@@ -28,10 +28,12 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
-        // Get list/IEnumerable of user role strings
+        // Get list/IEnumerable of all roles (strings) assigned to a user 
         public async Task<IEnumerable<string>> GetUserRolesAsync(ZUser user)
         {
-            throw new NotImplementedException();
+            // Pass in user to userManager to get their roles
+            IEnumerable<string> result = await _userManager.GetRolesAsync(user);
+            return result;
         }
 
         // AddUserToRoleAsync, return action success/failure
@@ -56,7 +58,12 @@ namespace ZapperBugTracker.Services
         // GetUsersInRoleAsync based on role and companyId, return list of users
         public async Task<List<ZUser>> GetUsersInRoleAsync(string roleName, int companyId)
         {
-            throw new NotImplementedException();
+            // Store List of ZUsers based on roleName passed into userManager.GetUsersinRoleAsync
+            // Filter list where user's companyId matches passed in Id
+            List<ZUser> users = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
+            List<ZUser> result = users.Where(u => u.CompanyId == companyId).ToList();
+            return result;
+
         }
 
         // GetUsersNotInRoleAsync, return list of users
