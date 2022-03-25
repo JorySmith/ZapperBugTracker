@@ -942,7 +942,7 @@ namespace ZapperBugTracker.Data.Migrations
             modelBuilder.Entity("ZapperBugTracker.Models.ZUser", b =>
                 {
                     b.HasOne("ZapperBugTracker.Models.Company", "Company")
-                        .WithMany("Users")
+                        .WithMany("Members")
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
@@ -950,9 +950,9 @@ namespace ZapperBugTracker.Data.Migrations
 
             modelBuilder.Entity("ZapperBugTracker.Models.Company", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("Members");
 
-                    b.Navigation("Users");
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("ZapperBugTracker.Models.Project", b =>

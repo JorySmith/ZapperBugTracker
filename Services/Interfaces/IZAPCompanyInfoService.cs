@@ -6,7 +6,7 @@ namespace ZapperBugTracker.Services.Interfaces
     {
         // Company CRUD operations 
         // Get company info using companyId, nullable to enable input validation checks
-        public Task<Company> GetCompanyInfoById(int? companyId);
+        public Task<Company> GetCompanyInfoByIdAsync(int? companyId);
 
         // Get all members for a companyId
         public Task<List<ZUser>> GetAllMembersAsync(int companyId);

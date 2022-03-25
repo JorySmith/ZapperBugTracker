@@ -43,6 +43,16 @@ namespace ZapperBugTracker.Services
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.Comments)
                                             .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.Attachments)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.History)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.Notifications)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.DeveloperUser)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.OwnerUser)
+                                            .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.TicketStatus)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.TicketPriority)
@@ -57,13 +67,35 @@ namespace ZapperBugTracker.Services
         // Get all tickets for a companyId
         public async Task<List<Ticket>> GetAllTicketsAsync(int companyId)
         {
-            throw new NotImplementedException();
+            // Instantiate a blank list of type Ticket to store and return ticket query results
+            List<Ticket> result = new();
+
+            // Get all company projects async first, then associated tickets
+            List<Project> projects = new();
+
+            projects = await GetAllProjectsAsync(companyId);
+
+            // SelectMany tickets from each project, save to list
+            result = projects.SelectMany(p => p.Tickets).ToList();
+
+            return result;
         }
 
         // Get company info using companyId, nullable to enable input validation checks
-        public Task<Company> GetCompanyInfoById(int? companyId)
+        public async Task<Company> GetCompanyInfoByIdAsync(int? companyId)
         {
-            throw new NotImplementedException();
+            // Instantiate a blank type of Company to store resulting company info
+            Company result = new();
+
+            if (companyId != null)
+            {
+                // Find first or default company in DB, include 
+                result = await _context.Companies
+                    .Include(c => c.Members)
+                    .FirstOrDefaultAsync(c => c.Id == companyId);
+            }
+
+            return result;
         }
     }
 }
