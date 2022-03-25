@@ -16,10 +16,11 @@ namespace ZapperBugTracker.Models
         public string Description { get; set; }
 
         // Navigation collection properties
-        // ZUsers and Projects
+        // ZUser Members, Projects, and User Invites
         public virtual ICollection<ZUser> Members { get; set; } = new HashSet<ZUser>();
-        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
+        public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();        
+        public virtual ICollection<Invite> Invites { get; set; } = new HashSet<Invite>();
 
-        // Relationship to User invites
+
     }
 }

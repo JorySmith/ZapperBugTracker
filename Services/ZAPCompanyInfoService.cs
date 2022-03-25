@@ -8,7 +8,7 @@ namespace ZapperBugTracker.Services
     public class ZAPCompanyInfoService : IZAPCompanyInfoService
     {
         // Implementation of company info interface
-        // Private vars to store dependency injected instance data
+        // Private var to store dependency injected instance DB data
         private readonly ApplicationDbContext _context;
 
         // Dependency injection into class constructor
@@ -89,10 +89,12 @@ namespace ZapperBugTracker.Services
 
             if (companyId != null)
             {
-                // Find first or default company in DB, include 
+                // Find first or default company in DB, include nav properties Members, Projects, and Invites
                 result = await _context.Companies
-                    .Include(c => c.Members)
-                    .FirstOrDefaultAsync(c => c.Id == companyId);
+                                        .Include(c => c.Members)
+                                        .Include(c => c.Projects)
+                                        .Include(c => c.Invites)
+                                        .FirstOrDefaultAsync(c => c.Id == companyId);
             }
 
             return result;
