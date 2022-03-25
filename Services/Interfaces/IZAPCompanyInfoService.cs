@@ -16,4 +16,5 @@ namespace ZapperBugTracker.Services.Interfaces
 
         // Get all tickets for a companyId
         public Task<List<Ticket>> GetAllTicketsAsync(int companyId);
+    }
 }
