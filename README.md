@@ -1,6 +1,6 @@
 # Zapper Bug Tracker
 
- A full stack bug tracker built with C#, ASP.NET Core 6.0 MVC, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
+ A full stack, multi-tenant bug tracker built with C#, ASP.NET Core 6.0, MVC pattern, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
 
  ## Live Demo
 
@@ -17,4 +17,4 @@
  3. Add Npgsql NuGet packages, update Program.cs services  
  4. Create AppDbContext DbSets and data migratations, then update PostgreSQL database  
  5. Scaffold model controllers  
- 6. Build services and interfaces/service layer: Roles, 
+ 6. Build services and interfaces/service layer: Roles, Company Info,  

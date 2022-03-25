@@ -4,6 +4,7 @@ namespace ZapperBugTracker.Services.Interfaces
 {
     public interface IZAPRolesService
     {
+        // User role CRUD operations
         // IsUserInRoleAsync check, Task method is async and can return a data type
         public Task<bool> IsUserInRoleAsync(ZUser user, string roleName);
 
