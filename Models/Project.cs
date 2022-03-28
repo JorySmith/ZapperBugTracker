@@ -35,7 +35,7 @@ namespace ZapperBugTracker.Models
 
         // Project Priority Id, nullable
         [DisplayName("Priority")]
-        public int ProjectProjectId { get; set; }
+        public int? ProjectPriorityId { get; set; }
 
         // Image IFormFile upload, don't map it to db
         // DataType.DataUpload

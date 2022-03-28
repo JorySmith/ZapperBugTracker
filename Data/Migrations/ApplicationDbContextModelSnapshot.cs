@@ -331,10 +331,7 @@ namespace ZapperBugTracker.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int>("ProjectPriorityId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProjectProjectId")
+                    b.Property<int?>("ProjectPriorityId")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("StartDate")
@@ -755,7 +752,7 @@ namespace ZapperBugTracker.Data.Migrations
             modelBuilder.Entity("ZapperBugTracker.Models.Invite", b =>
                 {
                     b.HasOne("ZapperBugTracker.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Invites")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -822,9 +819,7 @@ namespace ZapperBugTracker.Data.Migrations
 
                     b.HasOne("ZapperBugTracker.Models.ProjectPriority", "ProjectPriority")
                         .WithMany()
-                        .HasForeignKey("ProjectPriorityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectPriorityId");
 
                     b.Navigation("Company");
 
@@ -950,6 +945,8 @@ namespace ZapperBugTracker.Data.Migrations
 
             modelBuilder.Entity("ZapperBugTracker.Models.Company", b =>
                 {
+                    b.Navigation("Invites");
+
                     b.Navigation("Members");
 
                     b.Navigation("Projects");

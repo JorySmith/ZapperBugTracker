@@ -58,7 +58,7 @@ namespace ZapperBugTracker.Services
                                                 .ThenInclude(t => t.TicketPriority)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.TicketType)
-                                            .Include(p => p.ProjectPriority)                                            
+                                            .Include(p => p.ProjectPriority)
                                             .ToListAsync();
 
             return result;

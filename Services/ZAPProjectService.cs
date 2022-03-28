@@ -17,22 +17,26 @@ namespace ZapperBugTracker.Services
         }
 
         // Methods
+        // Add new project
         public async Task AddNewProjectAsync(Project project)
         {
             _context.Add(project);
             await _context.SaveChangesAsync();
         }
 
+        // Add project manager
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
             throw new NotImplementedException();
         }
 
+        // Add user to project
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
             throw new NotImplementedException();
         }
 
+        // Archive project
         public async Task ArchiveProjectAsync(Project project)
         {
             // Updated project's archived property
@@ -43,6 +47,7 @@ namespace ZapperBugTracker.Services
             await _context.SaveChangesAsync();
         }
 
+        // 
         public async Task<List<ZUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
             throw new NotImplementedException();
@@ -50,17 +55,54 @@ namespace ZapperBugTracker.Services
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
-            throw new NotImplementedException();
+            // Create blank list of projects to store query results
+            List<Project> projects = new();
+
+            // Query DB
+            projects = await _context.Projects.Where(p => p.CompanyId == companyId)
+                                            .Include(p => p.Members)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.Comments)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.Attachments)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.History)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.Notifications)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.DeveloperUser)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.OwnerUser)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.TicketStatus)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.TicketPriority)
+                                            .Include(p => p.Tickets)
+                                                .ThenInclude(t => t.TicketType)
+                                            .Include(p => p.ProjectPriority)
+                                            .ToListAsync();
+
+            return projects;
         }
 
+        // Get projects by company and priority name
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
-            throw new NotImplementedException();
+            List<Project> projects = await GetAllProjectsByCompany(companyId);
+            int priorityId = await LookupProjectPriorityId(priorityName);
+
+            return projects.Where(p => p.ProjectPriorityId == priorityId).ToList();
         }
 
+        // Get archived projects
         public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
-            throw new NotImplementedException();
+            // Create blank list of projects to store query results from above method
+            List<Project> projects = await GetAllProjectsByCompany(companyId);
+
+            // Return list of projects where Archived prop is true
+            return projects.Where(p => p.Archived == true).ToList();
+
         }
 
         public async Task<List<ZUser>> GetDevelopersOnProjectAsync(int projectId)
@@ -68,6 +110,7 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Get project info
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
             // Include navigation properties linked to other tables: Tickets, Members, & Project Pri
@@ -110,9 +153,13 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Lookup project priority Id
         public async Task<int> LookupProjectPriorityId(string priorityName)
         {
-            throw new NotImplementedException();
+            // Query DB, retrieve Id
+            int priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName)).Id;
+
+            return priorityId;
         }
 
         public async Task RemoveProjectManagerAsync(int projectId)
@@ -130,6 +177,7 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Update project
         public async Task UpdateProjectAsync(Project project)
         {
             _context.Update(project);
