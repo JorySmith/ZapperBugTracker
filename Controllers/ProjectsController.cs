@@ -64,7 +64,7 @@ namespace ZapperBugTracker.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); 
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Id", project.CompanyId);
             return View(project);

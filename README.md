@@ -8,7 +8,9 @@
 
  ### Features
 
- 1.  
+ 1. CRUD functionality  
+ 2. PostgreSQL backend database integration  
+ 3. OOP and SOLID principles  
 
  ### Build Steps
 
@@ -17,4 +19,4 @@
  3. Add Npgsql NuGet packages, update Program.cs services  
  4. Create AppDbContext DbSets and data migratations, then update PostgreSQL database  
  5. Scaffold model controllers  
- 6. Build services and interfaces/service layer: User Roles, Company Info,  
+ 6. Build services and interfaces/service layer: User Roles, Company Info, Projects,  
