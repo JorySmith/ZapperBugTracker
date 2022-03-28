@@ -169,9 +169,44 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Get user's projects
         public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
-            throw new NotImplementedException();
+            
+            try
+            {
+                // Find and store list of user's projects from DB and include desired properties
+                List<Project> userProjects = (await _context.Users
+                                                           .Include(u => u.Projects)
+                                                               .ThenInclude(p => p.Company)
+                                                           .Include(u => u.Projects)
+                                                               .ThenInclude(p => p.Members)
+                                                           .Include(u => u.Projects)
+                                                               .ThenInclude(p => p.Tickets)
+                                                           .Include(u => u.Projects)
+                                                               .ThenInclude(t => t.Tickets)
+                                                                    .ThenInclude(t => t.DeveloperUser)
+                                                            .Include(u => u.Projects)
+                                                               .ThenInclude(t => t.Tickets)
+                                                                    .ThenInclude(t => t.OwnerUser)
+                                                            .Include(u => u.Projects)
+                                                               .ThenInclude(t => t.Tickets)
+                                                                    .ThenInclude(t => t.TicketPriority)
+                                                            .Include(u => u.Projects)
+                                                               .ThenInclude(t => t.Tickets)
+                                                                    .ThenInclude(t => t.TicketStatus)
+                                                            .Include(u => u.Projects)
+                                                               .ThenInclude(t => t.Tickets)
+                                                                    .ThenInclude(t => t.TicketType)
+                                                           .FirstOrDefaultAsync(u => u.Id == userId)).Projects.ToList();
+
+                return userProjects;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"**ERROR** Getting user's projects - {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<ZUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
