@@ -33,7 +33,38 @@ namespace ZapperBugTracker.Services
         // Add user to project
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            // Store input user in a blank ZUser instance, use to add user to project members
+            ZUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user != null)
+            {
+                // Store project from DB in a Project instance
+                // If user isn't already in project, then add user
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+                
+                
+                if (!await IsUserOnProjectAsync(userId, projectId))
+                {
+                    try
+                    {
+                        project.Members.Add(user);
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Archive project
@@ -181,11 +212,39 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Remove user from project by userId
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Find and store user to pass later to Project
+                // Find and store project to receive user to be removed
+                ZUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+                try
+                {
+                    // If user on project, remove user
+                    if (await IsUserOnProjectAsync(userId, project.Id))
+                    {
+                        project.Members.Remove(user);
+
+                        // Save changes to DB async
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }      
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"****ERROR**** - Removing User from Project - {ex.Message}");
+            }
         }
 
+        // Remove user from project by user role
         public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
             throw new NotImplementedException();
