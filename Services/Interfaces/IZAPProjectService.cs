@@ -51,7 +51,7 @@ namespace ZapperBugTracker.Services.Interfaces
         public Task<List<Project>> GetUserProjectsAsync(string userId);
 
         // Is user working on a projectId?, return bool
-        public Task<bool> IsUserOnProject(string userId, int projectId);
+        public Task<bool> IsUserOnProjectAsync(string userId, int projectId);
 
         // Lookup project priority Id based on priority name
         public Task<int> LookupProjectPriorityId(string priorityName);

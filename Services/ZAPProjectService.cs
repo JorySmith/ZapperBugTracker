@@ -58,8 +58,8 @@ namespace ZapperBugTracker.Services
             // Create blank list of projects to store query results
             List<Project> projects = new();
 
-            // Query DB
-            projects = await _context.Projects.Where(p => p.CompanyId == companyId)
+            // Query DB for specific projects and associated foreign navigation properties
+            projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
                                             .Include(p => p.Members)
                                             .Include(p => p.Tickets)
                                                 .ThenInclude(t => t.Comments)
@@ -148,9 +148,23 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> IsUserOnProject(string userId, int projectId)
+        // Is user on project?
+        public async Task<bool> IsUserOnProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            // Store project query in an instance of Project
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            bool result = false;
+
+            // Check if any member Ids match input userId
+            if (project != null)
+            {
+                result = project.Members.Any(m => m.Id == userId);
+            }
+
+            return result;
         }
 
         // Lookup project priority Id
