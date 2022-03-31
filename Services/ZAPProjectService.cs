@@ -83,7 +83,7 @@ namespace ZapperBugTracker.Services
         // 
         public async Task<List<ZUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            throw new NotImplementedException();
+            
         }
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
