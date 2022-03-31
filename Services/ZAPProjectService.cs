@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ZapperBugTracker.Data;
 using ZapperBugTracker.Models;
+using ZapperBugTracker.Models.Enums;
 using ZapperBugTracker.Services.Interfaces;
 
 namespace ZapperBugTracker.Services
@@ -80,10 +81,18 @@ namespace ZapperBugTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        // 
+        // Get project members except the PM
         public async Task<List<ZUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            
+            // Store list of developers, submitters, and admins
+            List<ZUser> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
+            List<ZUser> submitters = await GetProjectMembersByRoleAsync(projectId, Roles.Submitter.ToString());
+            List<ZUser> admins = await GetProjectMembersByRoleAsync(projectId, Roles.Admin.ToString());
+
+            // Create a new list to concat and store all 3 lists from above
+            List<ZUser> teamMembers = developers.Concat(submitters).Concat(admins).ToList();
+
+            return teamMembers;
         }
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
@@ -118,7 +127,7 @@ namespace ZapperBugTracker.Services
             return projects;
         }
 
-        // Get projects by company and priority name
+        // Get all projects by company and priority name
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
             List<Project> projects = await GetAllProjectsByCompany(companyId);
@@ -143,7 +152,7 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
-        // Get project info
+        // Get a project by ID and companyId
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
             // Include navigation properties linked to other tables: Tickets, Members, & Project Pri
