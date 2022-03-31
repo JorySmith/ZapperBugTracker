@@ -302,7 +302,38 @@ namespace ZapperBugTracker.Services
         // Remove user from project by user role
         public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
-            throw new NotImplementedException();
+            // Try catch block
+            try
+            {
+                // Store list of ZUsers in a role, use GetProjectMembersByRoleAsync to filter members
+                List<ZUser> members = await GetProjectMembersByRoleAsync(projectId, role);
+
+                // Create instance of Project project to store filtered members from DB, return them
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+                // Loop through members, remove member/user from project 
+                // Save changes to DB
+                foreach (var user in members)
+                {
+                    try
+                    {
+                        project.Members.Remove(user);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write custom error message to console/stack trace and throw exception
+                Console.WriteLine($"** ERROR ** Removing users from project --> {ex.Message}");
+                throw;
+            }
         }
 
         // Update project
