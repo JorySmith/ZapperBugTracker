@@ -27,7 +27,7 @@ namespace ZapperBugTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        // Add project manager
+        // Add project manager to project
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
             throw new NotImplementedException();
@@ -240,7 +240,11 @@ namespace ZapperBugTracker.Services
 
         public async Task<List<ZUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
-            throw new NotImplementedException();
+            // Store list of users if their projects don't match the projectId input
+            List<ZUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
+
+            // Return only users that are part of companyId
+            return users.Where(u => u.CompanyId == companyId).ToList();
         }
 
         // Is user on project?
