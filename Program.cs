@@ -21,11 +21,10 @@ builder.Services.AddIdentity<ZUser, IdentityRole>(options => options.SignIn.Requ
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 
-// User Roles Service addScoped
+// User Roles, Company Info, and Project Services 
 builder.Services.AddScoped<IZAPRolesService, ZAPRolesService>();
-
-// Company Info Service
 builder.Services.AddScoped<IZAPCompanyInfoService, ZAPCompanyInfoService>();
+builder.Services.AddScoped<IZAPProjectService, ZAPProjectService>();
 
 builder.Services.AddControllersWithViews();
 

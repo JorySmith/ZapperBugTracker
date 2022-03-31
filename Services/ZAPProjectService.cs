@@ -30,7 +30,36 @@ namespace ZapperBugTracker.Services
         // Add project manager to project
         public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            // Get current PM from project
+            ZUser currentPM = await GetProjectManagerAsync(projectId);
+
+            // If project already has a PM, remove that PM
+            if (currentPM != null)
+            {
+                try
+                {
+                    await RemoveProjectManagerAsync(projectId);
+                }
+                catch (Exception ex)
+                {
+                    // If error, write ex.Message to console and return false
+                    Console.WriteLine($"Error removing PM from project -- {ex.Message}");
+                    return false;
+                }
+            }
+            // Add new PM to project
+            try
+            {
+                await AddProjectManagerAsync(userId, projectId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // If error, write ex.Message to console and return false
+                Console.WriteLine($"Error adding PM to project -- {ex.Message}");
+                return false;
+            }
+
         }
 
         // Add user to project
@@ -95,6 +124,7 @@ namespace ZapperBugTracker.Services
             return teamMembers;
         }
 
+        // Get all projects for a company
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
             // Create blank list of projects to store query results
@@ -147,6 +177,7 @@ namespace ZapperBugTracker.Services
 
         }
 
+        // 
         public async Task<List<ZUser>> GetDevelopersOnProjectAsync(int projectId)
         {
             throw new NotImplementedException();
@@ -165,9 +196,25 @@ namespace ZapperBugTracker.Services
             return project;
         }
 
+        // Get PM by projectId
         public async Task<ZUser> GetProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            // Create instance of project, get project from DB, include associated Members
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            // For each ZUser in project.Members (if project exists), check if member is a PM
+            foreach (ZUser member in project?.Members)
+            {
+                // User roleService to check member's role
+                if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                {
+                    return member;
+                }
+            }
+            // If no results, return null
+            return null;
         }
 
         // Get project members by role
@@ -193,6 +240,7 @@ namespace ZapperBugTracker.Services
             return members;
         }
 
+        // 
         public async Task<List<ZUser>> GetSubmittersOnProjectAsync(int projectId)
         {
             throw new NotImplementedException();
@@ -238,6 +286,7 @@ namespace ZapperBugTracker.Services
             }
         }
 
+        // Get user's not on a project
         public async Task<List<ZUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
             // Store list of users if their projects don't match the projectId input
@@ -275,9 +324,31 @@ namespace ZapperBugTracker.Services
             return priorityId;
         }
 
+        // Remove PM
         public async Task RemoveProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            // Get project and store it, include Members
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            // Try catch block for role check
+            try
+            {
+                // For each ZUser member in project.Members (if project exists), see if member is a PM
+                foreach (ZUser member in project?.Members)
+                {
+                    if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    {
+                        // If member is a PM, remove member
+                        await RemoveUserFromProjectAsync(member.Id, projectId);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         // Remove user from project by userId
