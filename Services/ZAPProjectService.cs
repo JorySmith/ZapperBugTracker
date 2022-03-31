@@ -9,11 +9,13 @@ namespace ZapperBugTracker.Services
     {
         // Private vars of DI data
         private readonly ApplicationDbContext _context;
+        private readonly IZAPRolesService _roleService;
 
         // Constructor
-        public ZAPProjectService(ApplicationDbContext context)
+        public ZAPProjectService(ApplicationDbContext context, IZAPRolesService roleService)
         {
             _context = context;
+            _roleService = roleService;
         }
 
         // Methods
@@ -159,9 +161,27 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Get project members by role
         public async Task<List<ZUser>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
-            throw new NotImplementedException();
+            // Find project in Projects table, include Members in query
+            // Store results in Project project to access members 
+            Project project = await _context.Projects
+                                            .Include(p => p.Members)
+                                            .FirstOrDefaultAsync(p => p.Id == projectId);
+            // Create an instance of a list of ZUsers called members to store memebers
+            List<ZUser> members = new();
+
+            // Loop through project.Members, use roleService to check user role
+            // Add to members if role matches input role
+            foreach (var user in project.Members)
+            {
+                if (await _roleService.IsUserInRoleAsync(user, role))
+                {
+                    members.Add(user);
+                }
+            }
+            return members;
         }
 
         public async Task<List<ZUser>> GetSubmittersOnProjectAsync(int projectId)
