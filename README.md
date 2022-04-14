@@ -19,4 +19,4 @@
  3. Add Npgsql NuGet packages, update Program.cs services  
  4. Create AppDbContext DbSets and data migratations, then update PostgreSQL database  
  5. Scaffold model controllers  
- 6. Build services and interfaces/service layer: User Roles, Company Info, Projects,  
+ 6. Build services and interfaces/service layer: User Roles, Company Info, Project, Ticket  
