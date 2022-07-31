@@ -32,14 +32,64 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
+        // Tickets are assigned to Projects, Projects to Companies
+        public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Ticket> tickets = await _context.Projects
+                                                     .Where(p => p.CompanyId == companyId)
+                                                     .SelectMany(p => p.Tickets) // Select many/all tickets and their local props
+                                                        .Include(t => t.Attachments) // Add ticket info from foreign tables
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.DeveloperUser)
+                                                        .Include(t => t.History)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Project)
+                                                     .ToListAsync(); // Save results to a list async
+                return tickets;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
-        public Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
+        // Tickets are assigned to TicketPriority (IDs) not string pri names, so LookupTicketPriorityIdAsync()
+        // Still Linq search through Projects because it contains Company and Tickets
+        public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {
-            throw new NotImplementedException();
+            int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value; // Since return type is int?, get .Value
+
+            try
+            {
+                List<Ticket> tickets = await _context.Projects
+                                                     .Where(p => p.CompanyId == companyId)
+                                                     .SelectMany(p => p.Tickets) // Select many/all tickets and their local props
+                                                        .Include(t => t.Attachments) // Add ticket info from foreign tables
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.DeveloperUser)
+                                                        .Include(t => t.History)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Project)
+                                                     .Where(t => t.TicketPriorityId == priorityId) // Where tickets match priorityId
+                                                     .ToListAsync(); // Save results to a list async
+                return tickets;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
@@ -108,7 +158,6 @@ namespace ZapperBugTracker.Services
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -123,7 +172,6 @@ namespace ZapperBugTracker.Services
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -138,7 +186,6 @@ namespace ZapperBugTracker.Services
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine(ex.Message);
                 throw;
             }
