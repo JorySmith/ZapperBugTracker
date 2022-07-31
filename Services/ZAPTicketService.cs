@@ -1,4 +1,5 @@
-﻿using ZapperBugTracker.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ZapperBugTracker.Data;
 using ZapperBugTracker.Models;
 using ZapperBugTracker.Services.Interfaces;
 
@@ -19,9 +20,11 @@ namespace ZapperBugTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task ArchiveTicketAsync(Ticket ticket)
+        public async Task ArchiveTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            ticket.Archived = true;
+            _context.Update(ticket);
+            await _context.SaveChangesAsync();
         }
 
         public Task AssignTicketAsync(int ticketId, string userId)
@@ -74,9 +77,10 @@ namespace ZapperBugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<Ticket> GetTicketByIdAsync(int ticketId)
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            // Return the first matching ticket or an empty default Ticket ticket
+            return await _context.Tickets.FirstOrDefaultAsync(t => t.Id == ticketId);
         }
 
         public Task<ZUser> GetTicketDeveloperAsync(int ticketId)
