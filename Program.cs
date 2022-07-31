@@ -21,7 +21,7 @@ builder.Services.AddIdentity<ZUser, IdentityRole>(options => options.SignIn.Requ
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 
-// Custom Services: User Roles, Company Info, and Project  
+// Custom Services (register interfaces): User Roles, Company Info, and Project  
 builder.Services.AddScoped<IZAPRolesService, ZAPRolesService>();
 builder.Services.AddScoped<IZAPCompanyInfoService, ZAPCompanyInfoService>();
 builder.Services.AddScoped<IZAPProjectService, ZAPProjectService>();

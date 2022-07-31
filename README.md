@@ -1,6 +1,6 @@
 # Zapper Bug Tracker
 
- A full stack, multi-tenant bug tracker built with C#, ASP.NET Core 6.0, MVC pattern, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
+ A full stack, multi-tenant bug tracker built with C#, ASP.NET, MVC, PostgreSQL, JavaScript, jQuery, Bootstrap, HTML, and CSS.  
 
  ## Live Demo
 
@@ -9,6 +9,7 @@
  ### Features
 
  1. CRUD functionality  
+ 2. Track projects, tickets, users, and companies  
  2. PostgreSQL backend database integration  
  3. OOP and SOLID principles  
 
@@ -19,4 +20,4 @@
  3. Add Npgsql NuGet packages, update Program.cs services  
  4. Create AppDbContext DbSets and data migratations, then update PostgreSQL database  
  5. Scaffold model controllers  
- 6. Build services and interfaces/service layer: User Roles, Company Info, Project, Ticket  
+ 6. Build services via interfaces (service layer): User Roles, Company Info, Project, Ticket  
