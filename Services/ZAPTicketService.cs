@@ -61,7 +61,7 @@ namespace ZapperBugTracker.Services
         }
 
         // Tickets are assigned to TicketPriority (IDs) not string pri names, so LookupTicketPriorityIdAsync()
-        // Still Linq search through Projects because it contains Company and Tickets
+        // Still Linq search through Projects because it contains Company and Tickets collections
         public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
         {
             int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value; // Since return type is int?, get .Value
@@ -92,14 +92,65 @@ namespace ZapperBugTracker.Services
             }
         }
 
-        public Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
+        public async Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName)
         {
-            throw new NotImplementedException();
+            // Convert string statusName to statusId, use Id for Linq query
+            int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
+
+            try
+            {
+                List<Ticket> tickets = await _context.Projects
+                                                     .Where(p => p.CompanyId == companyId)
+                                                     .SelectMany(p => p.Tickets) // Select many/all tickets and their local props
+                                                        .Include(t => t.Attachments) // Add ticket info from foreign tables
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.DeveloperUser)
+                                                        .Include(t => t.History)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Project)
+                                                     .Where(t => t.TicketStatusId == statusId) // Where tickets match statusId
+                                                     .ToListAsync(); // Save results to a list async
+                return tickets;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
-        public Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
+        public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {
-            throw new NotImplementedException();
+            int typeId = (await LookupTicketTypeIdAsync(typeName)).Value;
+
+            try
+            {
+                List<Ticket> tickets = await _context.Projects
+                                                     .Where(p => p.CompanyId == companyId)
+                                                     .SelectMany(p => p.Tickets) // Select many/all tickets and their local props
+                                                        .Include(t => t.Attachments) // Add ticket info from foreign tables
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.DeveloperUser)
+                                                        .Include(t => t.History)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.Comments)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Project)
+                                                     .Where(t => t.TicketTypeId == typeId) // Where tickets match statusId
+                                                     .ToListAsync(); // Save results to a list async
+                return tickets;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetArchivedTicketsAsync(int companyId)
