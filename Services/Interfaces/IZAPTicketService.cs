@@ -20,7 +20,7 @@ namespace ZapperBugTracker.Services.Interfaces
         public Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName);
         public Task<List<Ticket>> GetAllTicketsByStatusAsync(int companyId, string statusName);
         public Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName);
-        public Task<ZUser> GetTicketDeveloperAsync(int ticketId);
+        public Task<ZUser> GetTicketDeveloperAsync(int ticketId, int companyId);
         public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId);
         public Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId);
         public Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId);
