@@ -26,6 +26,7 @@ builder.Services.AddScoped<IZAPRolesService, ZAPRolesService>();
 builder.Services.AddScoped<IZAPCompanyInfoService, ZAPCompanyInfoService>();
 builder.Services.AddScoped<IZAPProjectService, ZAPProjectService>();
 builder.Services.AddScoped<IZAPTicketService, ZAPTicketService>();
+builder.Services.AddScoped<IZAPTicketHistoryService, ZAPTicketHistoryService>();
 
 builder.Services.AddControllersWithViews();
 
